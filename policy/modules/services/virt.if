@@ -130,6 +130,25 @@ interface(`virt_image',`
 
 ########################################
 ## <summary>
+##	Execute virtd in the caller domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`virt_exec',`
+	gen_require(`
+		type virtd_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, virtd_exec_t)
+')
+
+########################################
+## <summary>
 ##	Execute a domain transition to run virtd.
 ## </summary>
 ## <param name="domain">

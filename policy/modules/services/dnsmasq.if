@@ -99,6 +99,28 @@ interface(`dnsmasq_kill',`
 
 ########################################
 ## <summary>
+##	Send and receive messages from
+##	dnsmasq over dbus.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+#
+interface(`dnsmasq_dbus_chat',`
+	gen_require(`
+		type dnsmasq_t;
+		class dbus send_msg;
+	')
+
+	allow $1 dnsmasq_t:dbus send_msg;
+	allow dnsmasq_t:dbus send_msg;
+')
+
+########################################
+## <summary>
 ##	Read dnsmasq config files.
 ## </summary>
 ## <param name="domain">

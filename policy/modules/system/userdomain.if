@@ -2292,6 +2292,24 @@ interface(`userdom_delete_user_home_content_files',`
 
 ########################################
 ## <summary>
+##	Relabel files in a user home directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`userdom_relabel_user_home_content_files',`
+	gen_require(`
+		type user_home_t;
+	')
+
+	allow $1 user_home_t:file relabel_file_perms;
+')
+
+########################################
+## <summary>
 ##	Do not audit attempts to relabel user home files.
 ## </summary>
 ## <param name="domain">
@@ -2715,6 +2733,25 @@ interface(`userdom_manage_user_certs',`
 
 ########################################
 ## <summary>
+##	Connect to users over unix stream sockets.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_stream_connect',`
+	gen_require(`
+		type user_tmp_t;
+		attribute userdomain;
+	')
+
+	stream_connect_pattern($1, user_tmp_t, user_tmp_t, userdomain)
+')
+
+########################################
+## <summary>
 ##	Write to user temporary named sockets.
 ## </summary>
 ## <param name="domain">
@@ -2789,6 +2826,24 @@ interface(`userdom_delete_user_tmp_dirs',`
 	')
 
 	delete_dirs_pattern($1, user_tmp_t, user_tmp_t)
+')
+
+########################################
+## <summary>
+##	Relabel users temporary directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_relabel_user_tmp_dirs',`
+	gen_require(`
+		type user_tmp_t;
+	')
+
+	allow $1 user_tmp_t:dir relabel_dir_perms;
 ')
 
 ########################################

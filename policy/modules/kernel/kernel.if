@@ -147,6 +147,24 @@ interface(`kernel_setsched',`
 
 ########################################
 ## <summary>
+##	Dontaudit attempts to set the priority of kernel threads.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`kernel_dontaudit_setsched',`
+	gen_require(`
+		type kernel_t;
+	')
+
+	dontaudit $1 kernel_t:process setsched;
+')
+
+########################################
+## <summary>
 ##	Send a SIGCHLD signal to kernel threads.
 ## </summary>
 ## <param name="domain">
@@ -986,6 +1004,25 @@ interface(`kernel_dontaudit_setattr_proc_dirs',`
 
 ########################################
 ## <summary>
+##	Do not audit attempts to set the
+##	attributes of files in /proc.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`kernel_dontaudit_setattr_proc_files',`
+	gen_require(`
+		type proc_t;
+	')
+
+	dontaudit $1 proc_t:file setattr;
+')
+
+########################################
+## <summary>
 ##	Search directories in /proc.
 ## </summary>
 ## <param name="domain">
@@ -1224,6 +1261,25 @@ interface(`kernel_dontaudit_read_proc_symlinks',`
 	dontaudit $1 proc_t:lnk_file read;
 ')
 
+########################################
+## <summary>
+##	Do not audit attempts to check the
+##	access on generic proc entries.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`kernel_dontaudit_access_check_proc',`
+	gen_require(`
+		type proc_t;
+	')
+
+	dontaudit $1 proc_t:dir_file_class_set audit_access;
+')
+
 #######################################
 ## <summary>
 ##	Allow caller to read and write state information for AFS.
@@ -1366,6 +1422,28 @@ interface(`kernel_read_messages',`
 
 	read_files_pattern($1, proc_t, proc_kmsg_t)
 
+	typeattribute $1 can_receive_kernel_messages;
+')
+
+########################################
+## <summary>
+##	Allow attempts to read all proc types.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`kernel_read_all_proc',`
+	gen_require(`
+		attribute proc_type;
+		attribute can_dump_kernel;
+		attribute can_receive_kernel_messages;
+	')
+
+	read_files_pattern($1, proc_type, proc_type)
+	typeattribute $1 can_dump_kernel;
 	typeattribute $1 can_receive_kernel_messages;
 ')
 

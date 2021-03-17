@@ -1872,6 +1872,24 @@ interface(`files_dontaudit_write_all_mountpoints',`
 
 ########################################
 ## <summary>
+##	Do not audit attempts to unmount all mount points.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`files_dontaudit_unmount_all_mountpoints',`
+	gen_require(`
+		attribute mountpoint;
+	')
+
+	dontaudit $1 mountpoint:filesystem unmount;
+')
+
+########################################
+## <summary>
 ##	List the contents of the root directory.
 ## </summary>
 ## <param name="domain">

@@ -146,6 +146,25 @@ interface(`dev_mounton',`
 
 ########################################
 ## <summary>
+##	Allow getattr on all device nodes.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_getattr_all_dev_nodes',`
+	gen_require(`
+		attribute device_node;
+		type device_t;
+	')
+
+	allow $1 { device_t device_node }:dir_file_class_set getattr;
+')
+
+########################################
+## <summary>
 ##	Allow full relabeling (to and from) of all device nodes.
 ## </summary>
 ## <param name="domain">
@@ -3273,6 +3292,25 @@ interface(`dev_getattr_mtrr_dev',`
 
 ########################################
 ## <summary>
+##	Read the memory type range registers (MTRR) device.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_read_mtrr_dev',`
+	gen_require(`
+		type device_t, mtrr_device_t;
+	')
+
+	read_files_pattern($1, device_t, mtrr_device_t)
+	read_chr_files_pattern($1, device_t, mtrr_device_t)
+')
+
+########################################
+## <summary>
 ##	Do not audit attempts to write the memory type
 ##	range registers (MTRR).
 ## </summary>
@@ -4361,6 +4399,24 @@ interface(`dev_mounton_sysfs_dirs',`
 	')
 
 	allow $1 sysfs_t:dir mounton;
+')
+
+########################################
+## <summary>
+##     Do not audit attepmts to mounton sysfs directories.
+## </summary>
+## <param name="domain">
+##     <summary>
+##     Domain allowed access.
+##     </summary>
+## </param>
+#
+interface(`dev_dontaudit_mounton_sysfs_dirs',`
+	gen_require(`
+		type sysfs_t;
+	')
+
+	dontaudit $1 sysfs_t:dir mounton;
 ')
 
 ########################################

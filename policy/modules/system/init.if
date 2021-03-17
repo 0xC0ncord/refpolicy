@@ -1245,7 +1245,7 @@ interface(`init_service_status',`
 
 ########################################
 ## <summary>
-## 	Allow specified domain to get init start
+## 	Allow specified domain to start an init service
 ## </summary>
 ## <param name="domain">
 ## <summary>
@@ -1260,6 +1260,45 @@ interface(`init_service_start',`
 	')
 
 	allow $1 init_t:service start;
+')
+
+########################################
+## <summary>
+## 	Allow specified domain to stop an init service
+## </summary>
+## <param name="domain">
+## <summary>
+## 	Domain to allow access.
+## </summary>
+## </param>
+#
+interface(`init_service_stop',`
+	gen_require(`
+		type init_t;
+		class service start;
+	')
+
+	allow $1 init_t:service stop;
+')
+
+########################################
+## <summary>
+##	Allow the specified domain to modify the systemd configuration of
+##	transient scripts.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_manage_config_transient_files',`
+	gen_require(`
+		type init_var_run_t;
+		class service all_service_perms;
+	')
+
+	allow $1 init_runtime_t:service all_service_perms;
 ')
 
 ########################################
