@@ -166,7 +166,7 @@ ifndef(`distro_redhat',`
 	')
 
 	optional_policy(`
-		screen_role_template(staff, staff_r, staff_t)
+		screen_role_template(staff, staff_t, staff_user_exec_domain, staff_r)
 	')
 
 	optional_policy(`
