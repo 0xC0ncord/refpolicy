@@ -1,0 +1,10 @@
+/usr/bin/murmurd	--	gen_context(system_u:object_r:murmurd_exec_t,s0)
+/usr/bin/mumble-server	--	gen_context(system_u:object_r:murmurd_exec_t,s0)
+
+/etc/murmur(/.*)?		gen_context(system_u:object_r:murmurd_conf_t,s0)
+/etc/rc\.d/init\.d/murmur	--	gen_context(system_u:object_r:murmurd_initrc_exec_t,s0)
+
+/run/murmur(/.*)?		gen_context(system_u:object_r:murmurd_runtime_t,s0)
+
+/var/lib/murmur(/.*)?		gen_context(system_u:object_r:murmurd_var_lib_t,s0)
+/var/log/murmur(/.*)?		gen_context(system_u:object_r:murmurd_log_t,s0)

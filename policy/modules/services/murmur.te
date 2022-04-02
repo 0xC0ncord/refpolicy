@@ -1,0 +1,88 @@
+policy_module(murmur)
+
+########################################
+#
+# Declarations
+#
+
+attribute_role murmurd_roles;
+roleattribute system_r murmurd_roles;
+
+type murmurd_t;
+type murmurd_exec_t;
+application_executable_file(murmurd_exec_t)
+init_daemon_domain(murmurd_t, murmurd_exec_t)
+role murmurd_roles types murmurd_t;
+
+type murmurd_initrc_exec_t;
+init_script_file(murmurd_initrc_exec_t)
+
+type murmurd_conf_t;
+files_config_file(murmurd_conf_t)
+
+type murmurd_var_lib_t;
+files_type(murmurd_var_lib_t)
+
+type murmurd_log_t;
+logging_log_file(murmurd_log_t)
+
+type murmurd_runtime_t;
+files_runtime_file(murmurd_runtime_t)
+init_daemon_runtime_file(murmurd_runtime_t, dir, "murmur")
+
+########################################
+#
+# Local policy
+#
+
+allow murmurd_t self:process { execmem execstack getsched setsched signal };
+allow murmurd_t self:fifo_file rw_fifo_file_perms;
+allow murmurd_t self:tcp_socket create_stream_socket_perms;
+allow murmurd_t self:udp_socket create_socket_perms;
+allow murmurd_t self:unix_dgram_socket create_socket_perms;
+allow murmurd_t self:unix_stream_socket create_stream_socket_perms;
+allow murmurd_t self:netlink_route_socket create_netlink_socket_perms;
+corenet_tcp_bind_generic_node(murmurd_t)
+corenet_udp_bind_generic_node(murmurd_t)
+
+corenet_tcp_bind_murmurd_port(murmurd_t)
+corenet_udp_bind_murmurd_port(murmurd_t)
+
+# murmur executes lsb_release
+corecmd_exec_bin(murmurd_t)
+corecmd_exec_shell(murmurd_t)
+
+dev_read_urand(murmurd_t)
+
+domain_use_interactive_fds(murmurd_t)
+
+files_read_etc_files(murmurd_initrc_exec_t)
+files_read_etc_files(murmurd_t)
+files_dontaudit_getattr_all_dirs(murmurd_t)
+files_manage_generic_tmp_dirs(murmurd_t)
+files_manage_generic_tmp_files(murmurd_t)
+
+fs_getattr_xattr_fs(murmurd_t)
+
+miscfiles_read_generic_certs(murmurd_t)
+miscfiles_read_localization(murmurd_t)
+
+search_dirs_pattern(murmurd_t, murmurd_conf_t, murmurd_conf_t)
+read_files_pattern(murmurd_t, murmurd_conf_t, murmurd_conf_t)
+read_lnk_files_pattern(murmurd_t, murmurd_conf_t, murmurd_conf_t)
+
+create_dirs_pattern(murmurd_t, murmurd_log_t, murmurd_log_t)
+manage_files_pattern(murmurd_t, murmurd_log_t, murmurd_log_t)
+logging_log_filetrans(murmurd_t, murmurd_log_t, { dir file })
+
+manage_dirs_pattern(murmurd_t, murmurd_var_lib_t, murmurd_var_lib_t)
+manage_files_pattern(murmurd_t, murmurd_var_lib_t, murmurd_var_lib_t)
+files_var_lib_filetrans(murmurd_t, murmurd_var_lib_t, { dir file })
+
+manage_dirs_pattern(murmurd_t, murmurd_runtime_t, murmurd_runtime_t)
+manage_files_pattern(murmurd_t, murmurd_runtime_t, murmurd_runtime_t)
+files_runtime_filetrans(murmurd_t, murmurd_runtime_t, { dir file })
+
+optional_policy(`
+	certbot_read_lib(murmurd_t)
+')

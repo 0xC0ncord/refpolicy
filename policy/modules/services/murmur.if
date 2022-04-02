@@ -1,0 +1,90 @@
+## <summary>Server component for Mumble</summary>
+
+########################################
+## <summary>
+##	Execute murmurd in the murmurd domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`murmur_domtrans',`
+	gen_require(`
+		type murmurd_t, murmurd_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, murmurd_exec_t, murmurd_t)
+')
+
+########################################
+## <summary>
+##	Execute murmurd in the murmurd domain and
+##	allow the specified role the murmurd domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	The role to be allowed the murmurd domain.
+##	</summary>
+## </param>
+#
+interface(`murmur_run',`
+	gen_require(`
+		attribute_role murmurd_roles;
+	')
+
+	murmur_domtrans($1)
+	roleattribute $2 murmurd_roles;
+')
+
+
+########################################
+## <summary>
+##	All of the rules required to
+##	administrate a Murmur environment.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`murmur_admin',`
+    gen_require(`
+        type murmurd_t, murmurd_initrc_exec_t;
+		type murmurd_conf_t, murmurd_log_t;
+        type murmurd_runtime_t, murmurd_var_lib_t;
+    ')
+
+	murmur_run($1, murmurd_t)
+
+    init_startstop_service($1, $2, murmurd_t, murmurd_initrc_exec_t)
+
+    allow $1 murmurd_t:process { ptrace signal_perms };
+    ps_process_pattern($1, murmurd_t)
+
+    logging_search_logs($1)
+    admin_pattern($1, murmurd_log_t)
+
+	files_search_etc($1)
+	admin_pattern($1, murmurd_conf_t)
+
+    files_search_runtime($1)
+    admin_pattern($1, murmurd_runtime_t)
+
+	files_search_var_lib($1)
+	admin_pattern($1, murmurd_var_lib_t)
+')
