@@ -2869,6 +2869,24 @@ interface(`kernel_dontaudit_list_unlabeled',`
 
 ########################################
 ## <summary>
+##	Create unlabeled directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`kernel_create_unlabeled_dirs',`
+	gen_require(`
+		type unlabeled_t;
+	')
+
+	allow $1 unlabeled_t:dir create_dir_perms;
+')
+
+########################################
+## <summary>
 ##	Read and write unlabeled directories.
 ## </summary>
 ## <param name="domain">
