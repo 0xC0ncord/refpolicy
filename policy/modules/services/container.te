@@ -181,6 +181,8 @@ ifdef(`enable_mls',`
 mls_trusted_object(container_engine_t)
 
 container_domain_template(container_kvm)
+# try maintaining compatibility with kubevirt's external policy
+typealias container_kvm_t alias virt_launcher.process;
 typeattribute container_kvm_t container_system_domain, container_net_domain;
 optional_policy(`
 	kubernetes_container(container_kvm_t)
