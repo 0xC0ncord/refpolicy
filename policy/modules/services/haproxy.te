@@ -61,8 +61,9 @@ files_tmpfs_file(haproxy_tmpfs_t)
 # haproxy local policy
 #
 
-allow haproxy_t self:process { getsched setrlimit signal };
-allow haproxy_t self:capability { kill setgid setuid };
+allow haproxy_t self:process { getcap getsched setrlimit setsched signal };
+# net_raw for TPROXY access
+allow haproxy_t self:capability { kill net_raw setgid setuid };
 dontaudit haproxy_t self:capability net_admin;
 allow haproxy_t self:fifo_file rw_fifo_file_perms;
 allow haproxy_t self:tcp_socket create_stream_socket_perms;
@@ -96,6 +97,7 @@ domain_use_interactive_fds(haproxy_t)
 kernel_read_kernel_sysctls(haproxy_t)
 kernel_read_state(haproxy_t)
 kernel_read_system_state(haproxy_t)
+kernel_request_load_module(haproxy_t)
 
 auth_use_nsswitch(haproxy_t)
 
@@ -122,4 +124,8 @@ tunable_policy(`haproxy_connect_all_tcp_ports',`
 
 tunable_policy(`haproxy_connect_kubernetes_port',`
 	corenet_tcp_connect_kubernetes_port(haproxy_t)
+')
+
+ifdef(`init_systemd,`
+	systemd_write_notify_socket(haproxy_t)
 ')
