@@ -44,6 +44,8 @@ kernel_read_irq_sysctls(crio_t)
 kernel_read_vm_overcommit_sysctl(crio_t)
 kernel_request_load_module(crio_t)
 
+selinux_mounton_fs(crio_t)
+
 auth_use_nsswitch(crio_t)
 
 iptables_mounton_runtime_files(crio_t)
