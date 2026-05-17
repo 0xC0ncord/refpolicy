@@ -2454,6 +2454,7 @@ files_list_tmp(systemd_user_runtime_dir_t)
 
 fs_mount_tmpfs(systemd_user_runtime_dir_t)
 fs_getattr_tmpfs(systemd_user_runtime_dir_t)
+fs_get_tmpfs_quotas(systemd_user_runtime_dir_t)
 fs_list_tmpfs(systemd_user_runtime_dir_t)
 fs_unmount_tmpfs(systemd_user_runtime_dir_t)
 fs_relabelfrom_tmpfs_dirs(systemd_user_runtime_dir_t)
@@ -2468,8 +2469,10 @@ kernel_getattr_proc(systemd_user_runtime_dir_t)
 
 selinux_use_status_page(systemd_user_runtime_dir_t)
 
+systemd_manage_userdb_runtime_symlinks(systemd_user_runtime_dir_t)
 systemd_log_parse_environment(systemd_user_runtime_dir_t)
 systemd_dbus_chat_logind(systemd_user_runtime_dir_t)
+systemd_stream_connect_homed(systemd_user_runtime_dir_t)
 
 seutil_read_file_contexts(systemd_user_runtime_dir_t)
 seutil_libselinux_linked(systemd_user_runtime_dir_t)

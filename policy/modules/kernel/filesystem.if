@@ -5971,6 +5971,26 @@ interface(`fs_getattr_tmpfs',`
 
 ########################################
 ## <summary>
+##	Get the filesystem quotas of a tmpfs
+##	filesystem.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`fs_get_tmpfs_quotas',`
+	gen_require(`
+		type tmpfs_t;
+	')
+
+	allow $1 tmpfs_t:filesystem quotaget;
+')
+
+########################################
+## <summary>
 ##	Allow the type to associate to tmpfs filesystems.
 ## </summary>
 ## <param name="type">
