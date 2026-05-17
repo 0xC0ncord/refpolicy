@@ -230,6 +230,12 @@ portage_run_gcc_config(portage_t, portage_roles)
 # if sesandbox is disabled, compiling is performed in this domain
 portage_compile_domain(portage_t)
 
+ifdef(`init_systemd',`
+	init_get_all_units_status(portage_t)
+	init_start_all_units(portage_t)
+	init_stop_all_units(portage_t)
+')
+
 optional_policy(`
 	bootloader_run(portage_t, portage_roles)
 ')
