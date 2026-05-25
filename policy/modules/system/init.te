@@ -311,9 +311,9 @@ ifdef(`init_systemd',`
 	allow init_t init_path_unit_loc_type:{ dir file } { getattr watch };
 
 	# for /run/systemd/inaccessible/{chr,blk,fifo}
-	allow init_t init_runtime_t:blk_file { create_blk_file_perms relabelto };
-	allow init_t init_runtime_t:chr_file { create_chr_file_perms relabelto };
-	allow init_t init_runtime_t:fifo_file { create_fifo_file_perms relabelto };
+	allow init_t init_runtime_t:blk_file { create_blk_file_perms relabelto setattr };
+	allow init_t init_runtime_t:chr_file { create_chr_file_perms relabelto setattr };
+	allow init_t init_runtime_t:fifo_file { create_fifo_file_perms relabelto setattr };
 
 	allow init_t systemprocess:process { dyntransition siginh };
 	allow init_t systemprocess:unix_stream_socket create_stream_socket_perms;
