@@ -126,6 +126,24 @@ interface(`zfs_read_zpool_cache',`
 
 ########################################
 ## <summary>
+##	Memory map the zpool cache.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`zfs_mmap_zpool_cache',`
+	gen_require(`
+		type zfs_zpool_cache_t;
+	')
+
+	allow $1 zfs_zpool_cache_t:file map;
+')
+
+########################################
+## <summary>
 ##	Delete the zpool cache file.
 ## </summary>
 ## <param name="domain">

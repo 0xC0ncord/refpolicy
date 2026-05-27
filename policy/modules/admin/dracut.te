@@ -201,6 +201,7 @@ optional_policy(`
 optional_policy(`
 	zfs_read_config(dracut_t)
 	zfs_read_zpool_cache(dracut_t)
+	zfs_map_zpool_cache(dracut_t)
 	zfs_delete_zpool_cache(dracut_t)
 	zfs_setattr_zpool_cache_files(dracut_t)
 	zfs_relabelto_zpool_cache_files(dracut_t)
